@@ -1,15 +1,15 @@
 import { createContext, useReducer, useEffect, useContext } from "react";
 import { authReducer } from "../reducers/authReducer";
 import { apiUrl, LOCAL_STORAGE_TOKEN_NAME } from "./constants";
-import { LoginForm, RegisterForm } from "../types/Auth";
+import { LoginForm, RegisterForm, ResponseLogin } from "../types/Auth";
 import axios from "axios";
 import setAuthToken from "../utils/setAuthToken";
 import { AuthActionType } from "../enums/Auth";
 import { AuthStateAndLoading } from "../types/Auth";
 type Context = {
-  loginUser: (loginForm: LoginForm) => void;
+  loginUser: (loginForm: LoginForm) => Promise<ResponseLogin>;
   authState: AuthStateAndLoading;
-  registerUser: (registerForm: RegisterForm) => void;
+  registerUser: (registerForm: RegisterForm) => Promise<ResponseLogin>;
   logoutUser: () => void;
 };
 const initialState: AuthStateAndLoading = {
@@ -17,12 +17,7 @@ const initialState: AuthStateAndLoading = {
   isAuthenticated: false,
   user: null,
 };
-const AuthContext = createContext<Context>({
-  loginUser: () => {},
-  authState: initialState,
-  registerUser: () => {},
-  logoutUser: () => {},
-});
+const AuthContext = createContext<Context | null>(null);
 const AuthContextProvider = ({ children }: { children: JSX.Element }) => {
   const [authState, dispatch] = useReducer(authReducer, initialState);
   const loadUser = async () => {
@@ -100,5 +95,5 @@ const AuthContextProvider = ({ children }: { children: JSX.Element }) => {
     </AuthContext.Provider>
   );
 };
-export const useAuthContext = () => useContext(AuthContext);
+export const useAuthContext = () => useContext(AuthContext) as Context;
 export default AuthContextProvider;

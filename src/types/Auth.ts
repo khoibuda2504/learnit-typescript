@@ -15,3 +15,8 @@ export type AuthStateType = {
 export type AuthStateAndLoading = AuthStateType & {
   authLoading: boolean;
 };
+export type ResponseLogin = {
+  message?: string;
+  success?: boolean;
+  accessToken?: string
+}

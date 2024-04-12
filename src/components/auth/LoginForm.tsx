@@ -1,7 +1,82 @@
-const LoginForm = () => {
-  return (
-    <div>LoginForm</div>
-  )
-}
+import { Link } from "react-router-dom";
+import { useState } from "react";
+import { useAuthContext } from "../../contexts/AuthContext";
+import Input from "./Input";
 
-export default LoginForm
+const LoginForm = () => {
+  const { loginUser } = useAuthContext();
+  const [alert, setAlert] = useState("");
+  const [loginForm, setLoginForm] = useState({
+    username: "",
+    password: "",
+  });
+  const { username, password } = loginForm;
+  const onChangeLoginForm = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setLoginForm({
+      ...loginForm,
+      [event.target.name]: event.target.value,
+    });
+  };
+
+  const login = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      const res = await loginUser(loginForm);
+      if (!res.success) {
+        setAlert("Tài khoản hoặc mật khẩu không chính xác");
+        const timeout = setTimeout(() => {
+          setAlert("");
+          clearTimeout(timeout);
+        }, 2000);
+      }
+    } catch (error) {
+      console.log("loginForm error: ", error);
+    }
+  };
+
+  return (
+    <>
+      {alert ? <div className="text-red-500">{alert}</div> : null}
+      <form className="my-4 w-1/3" onSubmit={login}>
+        <div className="mb-3">
+          <Input
+            type="text"
+            placeholder="Username"
+            name="username"
+            value={username}
+            onChange={onChangeLoginForm}
+          />
+        </div>
+        <div>
+          <Input 
+            type="password"
+            placeholder="Password"
+            name="password"
+            value={password}
+            onChange={onChangeLoginForm}
+          />
+        </div>
+        <button
+          className="mt-3 bg-[#56cc9d] border-[#56cc9d] text-white py-1 px-3 hover:bg-[#3ac18c] rounded-md"
+          type="submit"
+        >
+          Login
+        </button>
+      </form>
+      <p>
+        <span className="text-white">Don't have an account?</span>
+        <Link to="/register">
+          <button
+            className="ml-2 bg-[#6cc3d5] hover:bg-[#4eb7cd] text-white rounded-md
+           px-1 sm:text-sm sm:leading-6
+          "
+          >
+            Register
+          </button>
+        </Link>
+      </p>
+    </>
+  );
+};
+
+export default LoginForm;
