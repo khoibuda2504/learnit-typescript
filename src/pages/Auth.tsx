@@ -1,13 +1,14 @@
 import { LoginForm, RegisterForm } from "../components/auth";
 import { AuthType } from "../enums/Auth";
-import landing from "../assets/landing.jpg";
+// import landing from "../assets/landing.jpg";
 const Auth = ({ authRoute }: { authRoute: AuthType }) => {
   const ActiveComp = authRoute === AuthType.LOGIN ? LoginForm : RegisterForm;
+  // console.log('landing:::::', landing)
   return (
     <div
       className="h-screen bg-cover bg-center bg-no-repeat"
       style={{
-        backgroundImage: `url${landing}`,
+        backgroundImage: `url(/src/assets/landing.jpg)`
       }}
     >
       <div className="h-full bg-black bg-opacity-50">
