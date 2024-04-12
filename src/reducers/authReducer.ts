@@ -1,18 +1,11 @@
-import { AuthActionType } from "../constants";
+import { AuthActionType } from "../enums/Auth";
+import { AuthStateAndLoading, AuthStateType } from "../types/Auth";
 
-type AuthStateType = {
-  isAuthenticated: boolean;
-  user: null | object;
-};
-type AuthStateAndLoading = AuthStateType & {
-  authLoading: boolean;
-};
-
-// An interface for our actions
 type AuthAction = {
   type: AuthActionType;
   payload: AuthStateType;
 };
+
 export const authReducer = (state: AuthStateAndLoading, action: AuthAction) => {
   const {
     type,
