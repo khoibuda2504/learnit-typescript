@@ -6,3 +6,8 @@ export enum PostActionType {
   UPDATE_POST = "UPDATE_POST",
   FIND_POST = "FIND_POST"
 }
+export enum PostStatus {
+  TO_LEARN = "TO LEARN",
+  LEARNING = "LEARNING",
+  LEARNED = "LEARNED"
+}

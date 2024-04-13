@@ -1,12 +1,5 @@
 import { PostActionType } from "../enums/Post";
-import { PostReducerState } from "../types/Post";
-
-export type PostType = {
-  _id: string;
-  title?: string;
-  description?: string;
-  url?: string;
-};
+import { PostReducerState, PostType } from "../types/Post";
 
 type PostActionPayload =
   | { type: PostActionType.POSTS_LOADED_SUCCESS; payload: PostType[] }

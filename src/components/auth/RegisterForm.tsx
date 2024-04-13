@@ -2,9 +2,10 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuthContext } from "../../contexts/AuthContext";
 import Input from "./Input";
+import Button from "../layout/Button";
 
 const RegisterForm = () => {
-  const { registerUser } = useAuthContext();
+  const { registerUser, authState: { isSubmitting } } = useAuthContext();
   const [alert, setAlert] = useState("");
   const [registerForm, setRegisterForm] = useState({
     username: "",
@@ -53,6 +54,7 @@ const RegisterForm = () => {
             name="username"
             value={username}
             onChange={onChangeRegisterForm}
+            required
           />
         </div>
         <div className="mb-3">
@@ -62,6 +64,7 @@ const RegisterForm = () => {
             name="password"
             value={password}
             onChange={onChangeRegisterForm}
+            required
           />
         </div>
         <div>
@@ -71,25 +74,19 @@ const RegisterForm = () => {
             name="confirmPassword"
             value={confirmPassword}
             onChange={onChangeRegisterForm}
+            required
           />
         </div>
-        <button
-          className="mt-3 bg-[#56cc9d] border-[#56cc9d] text-white py-1 px-3 hover:bg-[#3ac18c] rounded-md"
-          type="submit"
-        >
+        <Button variant="primary" className="mt-3" type="submit" disabled={isSubmitting}>
           Register
-        </button>
+        </Button>
       </form>
       <p>
         <span className="text-white">Already have an account?</span>
         <Link to="/login">
-          <button
-            className="ml-2 bg-[#6cc3d5] hover:bg-[#4eb7cd] text-white rounded-md
-           px-1 sm:text-sm sm:leading-6
-          "
-          >
+          <Button className="ml-2" variant="secondary">
             Login
-          </button>
+          </Button>
         </Link>
       </p>
     </>

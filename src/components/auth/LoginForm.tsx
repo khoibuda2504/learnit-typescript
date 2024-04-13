@@ -2,9 +2,13 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useAuthContext } from "../../contexts/AuthContext";
 import Input from "./Input";
+import Button from "../layout/Button";
 
 const LoginForm = () => {
-  const { loginUser } = useAuthContext();
+  const {
+    loginUser,
+    authState: { isSubmitting },
+  } = useAuthContext();
   const [alert, setAlert] = useState("");
   const [loginForm, setLoginForm] = useState({
     username: "",
@@ -45,34 +49,29 @@ const LoginForm = () => {
             name="username"
             value={username}
             onChange={onChangeLoginForm}
+            required
           />
         </div>
         <div>
-          <Input 
+          <Input
             type="password"
             placeholder="Password"
             name="password"
             value={password}
             onChange={onChangeLoginForm}
+            required
           />
         </div>
-        <button
-          className="mt-3 bg-[#56cc9d] border-[#56cc9d] text-white py-1 px-3 hover:bg-[#3ac18c] rounded-md"
-          type="submit"
-        >
+        <Button variant="primary" className="mt-3" type="submit" disabled={isSubmitting}>
           Login
-        </button>
+        </Button>
       </form>
       <p>
         <span className="text-white">Don't have an account?</span>
         <Link to="/register">
-          <button
-            className="ml-2 bg-[#6cc3d5] hover:bg-[#4eb7cd] text-white rounded-md
-           px-1 sm:text-sm sm:leading-6
-          "
-          >
+          <Button className="ml-2" variant="secondary">
             Register
-          </button>
+          </Button>
         </Link>
       </p>
     </>

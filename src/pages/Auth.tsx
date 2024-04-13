@@ -3,14 +3,13 @@ import { AuthType } from "../enums/Auth";
 import landing from "../assets/landing.jpg";
 import { useAuthContext } from "../contexts/AuthContext";
 import { Navigate } from "react-router-dom";
-import { Loading, Skeleton } from "../components";
+import { Loading } from "../components";
 const Auth = ({ authRoute }: { authRoute: AuthType }) => {
   const {
     authState: { authLoading, isAuthenticated },
   } = useAuthContext();
 
   const ActiveComp = authRoute === AuthType.LOGIN ? LoginForm : RegisterForm;
-  return <Skeleton />
   if (isAuthenticated) {
     return <Navigate to="/dashboard" />;
   }

@@ -1,7 +1,6 @@
 import { Navigate, Outlet } from "react-router-dom";
 import NavBarMenu from "../layout/NavBarMenu";
 import { useAuthContext } from "../../contexts/AuthContext";
-import Loading from "../layout/Loading";
 import Skeleton from "../layout/Skeleton";
 
 const ProtectedRoute = () => {

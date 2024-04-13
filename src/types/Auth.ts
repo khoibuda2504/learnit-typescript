@@ -1,3 +1,5 @@
+import { PostType } from "./Post";
+
 export type LoginForm = {
   username: string;
   password: string;
@@ -14,9 +16,15 @@ export type AuthStateType = {
 };
 export type AuthStateAndLoading = AuthStateType & {
   authLoading: boolean;
+  isSubmitting: boolean;
 };
-export type ResponseLogin = {
+export type Response = {
   message?: string;
   success?: boolean;
-  accessToken?: string
-}
+};
+export type ResponseLogin = Response & {
+  accessToken?: string;
+};
+export type ResponsePost = Response & {
+  post?: PostType;
+};

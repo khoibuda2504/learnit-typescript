@@ -16,6 +16,7 @@ const initialState: AuthStateAndLoading = {
   authLoading: true,
   isAuthenticated: false,
   user: null,
+  isSubmitting: false,
 };
 const AuthContext = createContext<Context | null>(null);
 const AuthContextProvider = ({ children }: { children: JSX.Element }) => {
@@ -42,6 +43,9 @@ const AuthContextProvider = ({ children }: { children: JSX.Element }) => {
     }
   };
   const registerUser = async (registerForm: RegisterForm) => {
+    dispatch({
+      type: AuthActionType.SET_IS_SUBMITTING,
+    });
     try {
       const response = await axios.post(
         `${apiUrl}/auth/register`,
@@ -61,6 +65,10 @@ const AuthContextProvider = ({ children }: { children: JSX.Element }) => {
       }
     } catch (error: any) {
       return { success: false, message: error.message };
+    } finally {
+      dispatch({
+        type: AuthActionType.SET_DONE,
+      });
     }
   };
   const logoutUser = () => {
@@ -74,6 +82,9 @@ const AuthContextProvider = ({ children }: { children: JSX.Element }) => {
     loadUser();
   }, []);
   const loginUser = async (loginForm: LoginForm) => {
+    dispatch({
+      type: AuthActionType.SET_IS_SUBMITTING,
+    });
     try {
       const response = await axios.post(`${apiUrl}/auth/login`, loginForm);
       if (response.data.success) {
@@ -86,6 +97,10 @@ const AuthContextProvider = ({ children }: { children: JSX.Element }) => {
       }
     } catch (error: any) {
       return { success: false, message: error.message };
+    } finally {
+      dispatch({
+        type: AuthActionType.SET_DONE,
+      });
     }
   };
   const authContentData = { loginUser, authState, registerUser, logoutUser };

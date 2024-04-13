@@ -1,47 +1,35 @@
-import { createContext, useReducer, useState } from "react";
+import { createContext, useContext, useReducer, useState } from "react";
 import { postReducer } from "../reducers/postReducer";
 import { apiUrl } from "./constants";
 import axios from "axios";
 import { PostReducerState, ShowToastType, PostType } from "../types/Post";
+import { ResponsePost } from "../types/Auth";
 import { PostActionType } from "../enums/Post";
 type Context = {
   getPosts: () => void;
   postState: PostReducerState;
   showAddPostModal: boolean;
   setShowAddPostModal: React.Dispatch<React.SetStateAction<boolean>>;
-  addPost: (post: PostType) => void;
+  addPost: (post: Partial<PostType>) => Promise<ResponsePost>;
   showToast: ShowToastType;
   setShowToast: React.Dispatch<React.SetStateAction<ShowToastType>>;
   deletePost: (id: string) => void;
   findPost: (id: string) => void;
   showUpdatePostModal: boolean;
   setShowUpdatePostModal: React.Dispatch<React.SetStateAction<boolean>>;
-  updatePost: (post: PostType) => void;
+  updatePost: (post: PostType) => Promise<ResponsePost>;
 };
 const initialPostState: PostReducerState = {
   posts: [],
-  postsLoading: true,
-  post: { _id: "" },
+  postLoading: true,
+  post: {} as PostType,
 };
 const initialShowToast: ShowToastType = {
   show: false,
   message: "",
   type: null,
 };
-export const PostContext = createContext<Context>({
-  getPosts: () => {},
-  postState: initialPostState,
-  showAddPostModal: false,
-  setShowAddPostModal: () => {},
-  addPost: () => {},
-  showToast: initialShowToast,
-  setShowToast: () => {},
-  deletePost: () => {},
-  findPost: () => {},
-  showUpdatePostModal: false,
-  setShowUpdatePostModal: () => {},
-  updatePost: () => {},
-});
+export const PostContext = createContext<Context | null>(null);
 
 const PostContextProvider = ({ children }: { children: JSX.Element }) => {
   const [postState, dispatch] = useReducer(postReducer, initialPostState);
@@ -63,7 +51,7 @@ const PostContextProvider = ({ children }: { children: JSX.Element }) => {
     }
   };
   // Add post
-  const addPost = async (newPost: PostType) => {
+  const addPost = async (newPost: Partial<PostType>) => {
     try {
       const response = await axios.post(`${apiUrl}/posts`, newPost);
       if (response.data.success) {
@@ -133,5 +121,5 @@ const PostContextProvider = ({ children }: { children: JSX.Element }) => {
     </PostContext.Provider>
   );
 };
-
+export const usePostContext = () => useContext(PostContext) as Context;
 export default PostContextProvider;
